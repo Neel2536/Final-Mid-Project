@@ -165,7 +165,7 @@ htmltools::browsable(
 
 ## Summary
 
--   Y-Axis Distortion: By removing the unnatural break between \$700M and \$1,700M, you corrected the misleading scale, allowing for a more accurate representation of the data.
+-   Y-Axis Distortion: By removing the unnatural break between \$700M and \$1,700M, i corrected the misleading scale, allowing for a more accurate representation of the data.
 -   Bar Height Accuracy: The adjustment of bar heights ensured that the \$490M revenue no longer appears larger than the \$1.2B government funding, providing a correct visual comparison.
 -   Component Merging: Merging the separate income components (such as advertising revenue) into the total income bar resolved the confusion caused by showing them as separate bars. This now clearly reflects the subdivisions within the total income.
 -   Improved Visualization: The consistent color schemes and labels, along with the use of pie charts for proportional representation, enhance the clarity and comprehension of how each funding source contributes to the overall total.
