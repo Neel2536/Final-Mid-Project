@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "Project.html",
+    "href": "Project.html",
+    "title": "Redesign of Visualizations",
+    "section": "",
+    "text": "This chart from the Canadian National Broadcast Company showing their sources of funding in two financial years.\n\n\n\n\n\n\n\n\n\nIssues with the Graph\n\nThe Y-axis has an unnatural break between $700M and $1,700M, making the scale misleading.\nThe $490M revenue appears larger than the $1.2B government funding due to this distortion.\nAt first glance, it seems that television revenue is equal to government funding because the bars representing them are almost the same length.\nThe distortion in the Y-axis makes the visual comparison inaccurate, leading to misinterpretation.\nThe revenue and advertising revenue should not be separate bars; they should subdivide the total income bar.\nThe second and third bars only represent subdivisions of the first bar but are presented as separate, contributing to the confusion.\n\n\n\n\n\n\n\n\n\n\n\n\n\nRemoved the unnatural break between $700M and $1,700M for accurate data representation.\nCorrected bar heights to accurately compare the revenue of $490M to the government funding of $1.2B.\nMerged separate income components (such as advertising revenue) into the total income bar for a clearer breakdown.\nImproved the overall readability by using consistent color schemes and labels for different income categories.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntroduced pie charts to show the proportional contribution of each funding source for 2017-18 and 2018-19.\nUsed percentages to emphasize the dominance of government revenue, making it easier to understand the composition of the total funding.\nEnsured each section is clearly labeled and color-coded to match the funding categories, improving quick identification and comparison.\n\n\n\n\n\nY-Axis Distortion: By removing the unnatural break between $700M and $1,700M, you corrected the misleading scale, allowing for a more accurate representation of the data.\nBar Height Accuracy: The adjustment of bar heights ensured that the $490M revenue no longer appears larger than the $1.2B government funding, providing a correct visual comparison.\nComponent Merging: Merging the separate income components (such as advertising revenue) into the total income bar resolved the confusion caused by showing them as separate bars. This now clearly reflects the subdivisions within the total income.\nImproved Visualization: The consistent color schemes and labels, along with the use of pie charts for proportional representation, enhance the clarity and comprehension of how each funding source contributes to the overall total.\n\n\n\n\nhttps://www.codeconquest.com/blog/12-bad-data-visualization-examples-explained/"
+  },
+  {
+    "objectID": "Project.html#changes-i-made-to-the-bar-chart",
+    "href": "Project.html#changes-i-made-to-the-bar-chart",
+    "title": "Redesign of Visualizations",
+    "section": "",
+    "text": "Removed the unnatural break between $700M and $1,700M for accurate data representation.\nCorrected bar heights to accurately compare the revenue of $490M to the government funding of $1.2B.\nMerged separate income components (such as advertising revenue) into the total income bar for a clearer breakdown.\nImproved the overall readability by using consistent color schemes and labels for different income categories."
+  },
+  {
+    "objectID": "Project.html#changes-made-to-the-pie-charts",
+    "href": "Project.html#changes-made-to-the-pie-charts",
+    "title": "Redesign of Visualizations",
+    "section": "",
+    "text": "Introduced pie charts to show the proportional contribution of each funding source for 2017-18 and 2018-19.\nUsed percentages to emphasize the dominance of government revenue, making it easier to understand the composition of the total funding.\nEnsured each section is clearly labeled and color-coded to match the funding categories, improving quick identification and comparison."
+  },
+  {
+    "objectID": "Project.html#summary",
+    "href": "Project.html#summary",
+    "title": "Redesign of Visualizations",
+    "section": "",
+    "text": "Y-Axis Distortion: By removing the unnatural break between $700M and $1,700M, you corrected the misleading scale, allowing for a more accurate representation of the data.\nBar Height Accuracy: The adjustment of bar heights ensured that the $490M revenue no longer appears larger than the $1.2B government funding, providing a correct visual comparison.\nComponent Merging: Merging the separate income components (such as advertising revenue) into the total income bar resolved the confusion caused by showing them as separate bars. This now clearly reflects the subdivisions within the total income.\nImproved Visualization: The consistent color schemes and labels, along with the use of pie charts for proportional representation, enhance the clarity and comprehension of how each funding source contributes to the overall total."
+  },
+  {
+    "objectID": "Project.html#refrences",
+    "href": "Project.html#refrences",
+    "title": "Redesign of Visualizations",
+    "section": "",
+    "text": "https://www.codeconquest.com/blog/12-bad-data-visualization-examples-explained/"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Code",
+    "section": "",
+    "text": "library(readr)\nlibrary(plotly)\nlibrary(knitr)\nlibrary(tidyverse)\nlibrary(ggplot2)\ninclude_graphics(\"Final_revenue.png\")\nIssues with the Graph"
+  },
+  {
+    "objectID": "about.html#year-vs-amount-by-source-of-funding",
+    "href": "about.html#year-vs-amount-by-source-of-funding",
+    "title": "Code",
+    "section": "year vs amount by source of funding",
+    "text": "year vs amount by source of funding\n\nrevenue_data &lt;- read_csv(\"Untitled.csv\",show_col_types = FALSE)\n\n\nfunding_data &lt;- read.csv(\"Untitled.csv\")\n\ncolnames(funding_data) &lt;- c(\"Source.of.Funding\", \"2017-18\", \"2018-19\")\n\n\nfunding_long &lt;- pivot_longer(funding_data, cols = c(\"2018-19\",\"2017-18\"),\n                              names_to = \"Year\", values_to = \"Amount\")\n\n#  Calculate total revenue for each year\ntotal_revenue &lt;- funding_long %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Source.of.Funding = \"Total\", Amount = sum(Amount), .groups = 'drop')\n\n# Combine individual funding sources with total revenue\ncombined_data &lt;- bind_rows(funding_long, total_revenue)\n\n# Convert Source.of.Funding to a factor with explicit levels\ncombined_data$Source.of.Funding &lt;- factor(combined_data$Source.of.Funding,\n                                           levels = c(\"Government revenue\", \"Television revenue\", \"Digital revenue\", \n                                                      \"Subscriber fees\", \"Financing and other income\", \"Total\"))\n\ncombined_data$RoundedAmount &lt;- round(combined_data$Amount)\n\n\nplot_ly(data = combined_data, \n        x = ~Year, \n        y = ~Amount, \n        color = ~Source.of.Funding, \n        colors = c(\"Government revenue\" = \"#1f77b4\",\n                   \"Television revenue\" = \"#ff7f0e\",\n                   \"Digital revenue\" = \"#2ca02c\",\n                   \"Subscriber fees\" = \"#d62728\",\n                   \"Financing and other income\" = \"#9467bd\",\n                   \"Total\" = \"#7f7f7f\"),\n        type = 'bar', \n        text = ~RoundedAmount, \n        textposition = 'outside') %&gt;%\n  layout(title = \"Total Revenue of Canadian National Broadcast Company by Source of Funding\",\n         xaxis = list(title = \"Year\"),\n         yaxis = list(title = \"Amount ($ Millions)\"),\n         barmode = 'group')  # Grouped bar chart"
+  },
+  {
+    "objectID": "about.html#changes-i-made-to-the-bar-chart",
+    "href": "about.html#changes-i-made-to-the-bar-chart",
+    "title": "Code",
+    "section": "Changes I Made to the Bar Chart",
+    "text": "Changes I Made to the Bar Chart\n\nRemoved the unnatural break between $700M and $1,700M for accurate data representation.\nCorrected bar heights to accurately compare the revenue of $490M to the government funding of $1.2B.\nMerged separate income components (such as advertising revenue) into the total income bar for a clearer breakdown.\nImproved the overall readability by using consistent color schemes and labels for different income categories."
+  },
+  {
+    "objectID": "about.html#percantage-of-amount-by-source-of-funding",
+    "href": "about.html#percantage-of-amount-by-source-of-funding",
+    "title": "Code",
+    "section": "Percantage of amount by source of funding",
+    "text": "Percantage of amount by source of funding\n\n# Create the pie chart for 2018-19\npie_2018 &lt;- plot_ly(data = funding_long %&gt;% filter(Year == \"2018-19\"), \n                    labels = ~`Source.of.Funding`, \n                    values = ~Amount, \n                    type = 'pie', \n                    textinfo = 'label+percent', \n                    insidetextorientation = 'auto', \n                    marker = list(colors = c(\n                      \"#1f77b4\",  # Government revenue\n                      \"#ff7f0e\",  # Television revenue\n                      \"#2ca02c\",   # Digital revenue\n                      \"#d62728\",   # Subscriber fees\n                      \"#9467bd\"    # Financing and other income\n                    )),\n                    showlegend = TRUE,\n                    title = \"Funding Sources for 2018-19\") %&gt;%\n  layout(\n    legend = list(orientation = 'v',  # Vertical legend\n                  x = 1.1,            # Position on the right side\n                  y = 0.5,            # Centered vertically\n                  xanchor = 'left'),   # Left anchor for x\n    margin = list(r = 100)  # Increase right margin for legend spacing\n  )\n\n\n# Create the pie chart for 2018-19\npie_2017 &lt;- plot_ly(data = funding_long %&gt;% filter(Year == \"2017-18\"), \n                    labels = ~`Source.of.Funding`, \n                    values = ~Amount, \n                    type = 'pie', \n                    textinfo = 'label+percent', \n                    insidetextorientation = 'auto', \n                    marker = list(colors = c(\n                      \"#1f77b4\",  # Government revenue\n                      \"#ff7f0e\",  # Television revenue\n                      \"#2ca02c\",   # Digital revenue\n                      \"#d62728\",   # Subscriber fees\n                      \"#9467bd\"    # Financing and other income\n                    )),title = \"Funding Sources for 2017-18\",\n                    showlegend = TRUE) %&gt;%\n   layout(\n    legend = list(orientation = 'v',  # Vertical legend\n                  x = 1.1,            # Position on the right side\n                  y = 0.5,            # Centered vertically\n                  xanchor = 'left'),   # Left anchor for x\n    margin = list(r = 100)  # Increase right margin for legend spacing\n  ) # Increase bottom margin for better spacing\n\n\nhtmltools::browsable(\n  htmltools::tagList(\n    htmltools::tags$div(style = \"display: block; width: 100%; margin-bottom: 50px;\", pie_2018),\n    htmltools::tags$div(style = \"display: block; width: 100%;\", pie_2017)\n  )\n)"
+  },
+  {
+    "objectID": "about.html#changes-made-to-the-pie-charts",
+    "href": "about.html#changes-made-to-the-pie-charts",
+    "title": "Code",
+    "section": "Changes Made to the Pie Charts:",
+    "text": "Changes Made to the Pie Charts:\n\nIntroduced pie charts to show the proportional contribution of each funding source for 2017-18 and 2018-19.\nUsed percentages to emphasize the dominance of government revenue, making it easier to understand the composition of the total funding.\nEnsured each section is clearly labeled and color-coded to match the funding categories, improving quick identification and comparison."
+  },
+  {
+    "objectID": "about.html#summary",
+    "href": "about.html#summary",
+    "title": "Code",
+    "section": "Summary",
+    "text": "Summary\n\nY-Axis Distortion: By removing the unnatural break between $700M and $1,700M, you corrected the misleading scale, allowing for a more accurate representation of the data.\nBar Height Accuracy: The adjustment of bar heights ensured that the $490M revenue no longer appears larger than the $1.2B government funding, providing a correct visual comparison.\nComponent Merging: Merging the separate income components (such as advertising revenue) into the total income bar resolved the confusion caused by showing them as separate bars. This now clearly reflects the subdivisions within the total income.\nImproved Visualization: The consistent color schemes and labels, along with the use of pie charts for proportional representation, enhance the clarity and comprehension of how each funding source contributes to the overall total."
+  },
+  {
+    "objectID": "about.html#refrences",
+    "href": "about.html#refrences",
+    "title": "Code",
+    "section": "Refrences",
+    "text": "Refrences\nhttps://www.codeconquest.com/blog/12-bad-data-visualization-examples-explained/"
+  }
+]
